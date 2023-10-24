@@ -46,14 +46,13 @@ function Posts() {
 
       <Stack
         flex="1"
-        overflow="auto"
         py="5"
         divider={
           <StackDivider w="95%" alignSelf="center" borderColor="gray.600" />
         }
       >
         {chatData.map((thread) => (
-          <Box key={thread.id}>
+          <Box key={thread.id} py="3">
             <ThreadItems
               avatar={thread.avatar}
               date={thread.date}

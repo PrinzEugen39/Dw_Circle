@@ -24,6 +24,7 @@ export default function Home() {
           //   colSpan={4}
           bg="gray.800"
           p="2rem"
+          overflowY="auto"
         >
           <Thread />
         </GridItem>
