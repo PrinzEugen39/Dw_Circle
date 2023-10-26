@@ -6,8 +6,6 @@ import AppLayout from "./layout/AppLayout";
 import Thread from "./pages/Thread";
 import Login from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
-import { useSelector } from "react-redux";
-import { RootState } from "./store/type/RootState";
 import { useEffect, useState } from "react";
 import axiosApi, { setAuthToken } from "./config/axiosApi";
 import { useDispatch } from "react-redux";
@@ -22,7 +20,6 @@ const client = new QueryClient({
 });
 
 export default function App() {
-  const auth = useSelector((state: RootState) => state.auth);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -32,10 +29,7 @@ export default function App() {
     try {
       setAuthToken(localStorage.token);
       const response = await axiosApi.get("/auth/check");
-      // console.log("check auth app", response);
-
       dispatch(AUTH_CHECK(response?.data.user));
-      // navigate("/threads");
       setIsLoading(false);
     } catch (error) {
       dispatch(AUTH_ERROR());
@@ -50,10 +44,7 @@ export default function App() {
     } else {
       setIsLoading(false);
     }
-  }, [localStorage.token]);
-  
-
-  console.log(auth);
+  }, []);
   
   function IsNotLogin() {
     if (!localStorage.token) {

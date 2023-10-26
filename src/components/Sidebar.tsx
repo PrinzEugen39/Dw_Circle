@@ -6,10 +6,19 @@ import {
   BiSearchAlt,
   BiUserCircle,
 } from "react-icons/bi";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AUTH_LOGOUT } from "../store/RootReducer";
+import useToast from "../hooks/useToast";
 
 export default function Sidebar() {
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const toast = useToast()
+  function handleLogout() {
+    dispatch(AUTH_LOGOUT());
+    toast("Logout", "You have successfully logged out", "info")
+  }
   return (
     <Stack h="full" justifyContent="space-between">
       <Box>
@@ -51,7 +60,15 @@ export default function Sidebar() {
         </Stack>
       </Box>
 
-      <Button leftIcon={<BiLogOut />} variant="unstyled" color="white" onClick={() => navigate("/auth/login")}>
+      <Button
+        leftIcon={<BiLogOut />}
+        variant="unstyled"
+        color="white"
+        onClick={() => {
+          handleLogout();
+          navigate("/auth/login");
+        }}
+      >
         Logout
       </Button>
     </Stack>

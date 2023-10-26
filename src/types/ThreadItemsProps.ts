@@ -21,6 +21,12 @@ export type ThreadItemsProps = {
   likes: number;
   replies: number;
 };
+
+export type UseThreadProps = {
+  content: string,
+  image: string,
+  user_id: number,
+}
 // export type ThreadItemsPropsv1 = {
 //     id?: number;
 //     avatar: string;

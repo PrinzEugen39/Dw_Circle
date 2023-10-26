@@ -19,6 +19,7 @@ export function useRegister() {
   }
 
   const navigate = useNavigate();
+
   async function handleRegister() {
     try {
       const response = await axiosApi.post("/auth/register", form);

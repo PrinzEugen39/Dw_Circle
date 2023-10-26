@@ -15,9 +15,11 @@ import ThreadItems from "./ThreadItems";
 import { ThreadPostsProps } from "../../types/ThreadItemsProps";
 import Spinner from "../../components/Spinner";
 import { useThreads } from "../../hooks/useThread";
+import { useCreateThread } from "../../hooks/useCreateThread";
 
 export default function ThreadPosts() {
-  const { threadData, isLoading } = useThreads()
+  const { threadData, isLoading } = useThreads();
+  const { handleChange, handlePost } = useCreateThread();
 
   if (isLoading) return <Spinner />;
 
@@ -34,15 +36,16 @@ export default function ThreadPosts() {
             variant="flushed"
             placeholder="What's on your mind"
             maxW="25rem"
-  
+            onChange={handleChange}
           />
           <Input
             variant="flushed"
             placeholder="What's on your mind"
             maxW="25rem"
+            onChange={handleChange}
           />
           <IconButton aria-label="Search database" icon={<BiImageAdd />} />
-          <Button colorScheme="green">Post</Button>
+          <Button colorScheme="green" onClick={() =>handlePost.mutate()}>Post</Button>
         </HStack>
       </FormControl>
 
