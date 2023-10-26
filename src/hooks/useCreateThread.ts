@@ -9,8 +9,7 @@ export function useCreateThread() {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<UseThreadProps>({
     content: "",
-    image: "",
-    user_id: 5,
+    user_id: 6,
   });
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -19,14 +18,26 @@ export function useCreateThread() {
       [event.target.name]: event.target.value,
     });
   }
-
+  
   const handlePost = useMutation({
-    mutationFn: async () => await axiosApi.post("/threads", form),
-    onSuccess: () => {
-      toast("Success", "New Thread successfully posted 😀", "success");
-      queryClient.invalidateQueries({ queryKey: ["thread-posts"] });
+    mutationFn: async (newThread: UseThreadProps) => {
+      console.log(newThread);
+      
+      return await axiosApi.post("/thread", newThread);
     },
-    onError: (err) => toast("Error", err.message, "warning"),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["thread-posts"] });
+      toast("Success", "New Thread successfully posted 😀", "success");
+      setForm({
+        content: "",
+        user_id: 6,
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+      
+      toast("Error", err.message, "warning")
+    },
   });
-  return { handleChange, handlePost };
+  return { form, handleChange, handlePost };
 }

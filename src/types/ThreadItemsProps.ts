@@ -24,7 +24,7 @@ export type ThreadItemsProps = {
 
 export type UseThreadProps = {
   content: string,
-  image: string,
+
   user_id: number,
 }
 // export type ThreadItemsPropsv1 = {

@@ -19,7 +19,7 @@ import { useCreateThread } from "../../hooks/useCreateThread";
 
 export default function ThreadPosts() {
   const { threadData, isLoading } = useThreads();
-  const { handleChange, handlePost } = useCreateThread();
+  const { form, handleChange, handlePost } = useCreateThread();
 
   if (isLoading) return <Spinner />;
 
@@ -36,16 +36,11 @@ export default function ThreadPosts() {
             variant="flushed"
             placeholder="What's on your mind"
             maxW="25rem"
-            onChange={handleChange}
-          />
-          <Input
-            variant="flushed"
-            placeholder="What's on your mind"
-            maxW="25rem"
+            name="content"
             onChange={handleChange}
           />
           <IconButton aria-label="Search database" icon={<BiImageAdd />} />
-          <Button colorScheme="green" onClick={() =>handlePost.mutate()}>Post</Button>
+          <Button colorScheme="green" onClick={() => handlePost.mutate(form)}>Post</Button>
         </HStack>
       </FormControl>
 
