@@ -6,9 +6,10 @@ import {
   BiSearchAlt,
   BiUserCircle,
 } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
+  const navigate = useNavigate()
   return (
     <Stack h="full" justifyContent="space-between">
       <Box>
@@ -50,7 +51,7 @@ export default function Sidebar() {
         </Stack>
       </Box>
 
-      <Button leftIcon={<BiLogOut />} variant="unstyled" color="white">
+      <Button leftIcon={<BiLogOut />} variant="unstyled" color="white" onClick={() => navigate("/auth/login")}>
         Logout
       </Button>
     </Stack>
