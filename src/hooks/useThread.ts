@@ -12,6 +12,7 @@ export function useThreads() {
       const { data } = await axiosApi.get("/threads");
       return data;
     },
+
   });
 
   return { threadData, isLoading, error };

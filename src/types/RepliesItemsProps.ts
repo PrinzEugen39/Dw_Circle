@@ -52,3 +52,9 @@ export interface ThreadReplyInterface {
     profile_picture: string;
   };
 }
+
+export type UseCreateReplyProps = {
+  content: string,
+  user_id: number,
+  thread_id: number,
+}

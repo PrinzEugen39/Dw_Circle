@@ -25,24 +25,28 @@ export default function ThreadPosts() {
 
   return (
     <Flex direction="column" color={"gray.100"}>
-      <FormControl>
-        <HStack maxW={"6xl"} justifyContent={"center"} gap={5}>
-          <Avatar
-            size="sm"
-            name="Dan Abrahmov"
-            src="https://bit.ly/dan-abramov"
-          />
-          <Input
-            variant="flushed"
-            placeholder="What's on your mind"
-            maxW="25rem"
-            name="content"
-            onChange={handleChange}
-          />
-          <IconButton aria-label="Search database" icon={<BiImageAdd />} />
-          <Button colorScheme="green" onClick={() => handlePost.mutate(form)}>Post</Button>
-        </HStack>
-      </FormControl>
+      <form encType="multipart/form-data" onSubmit={() => handlePost.mutate(form)}>
+        <FormControl>
+          <HStack maxW={"6xl"} justifyContent={"center"} gap={5}>
+            <Avatar
+              size="sm"
+              name="Dan Abrahmov"
+              src="https://bit.ly/dan-abramov"
+            />
+            <Input
+              variant="flushed"
+              placeholder="What's on your mind"
+              maxW="25rem"
+              name="content"
+              onChange={handleChange}
+            />
+            <IconButton aria-label="Search database" icon={<BiImageAdd />} />
+            <Button colorScheme="green" type="submit">
+              Post
+            </Button>
+          </HStack>
+        </FormControl>
+      </form>
 
       <Stack
         flex="1"

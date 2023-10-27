@@ -7,44 +7,29 @@ import {
   HStack,
   Heading,
   Image,
+  Input,
+  InputGroup,
   Stack,
   StackDivider,
   Text,
   chakra,
 } from "@chakra-ui/react";
-import { useThreads } from "../../../hooks/useThread";
 import Spinner from "../../../components/Spinner";
 import { BiMessageAltDetail } from "react-icons/bi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsHeart } from "react-icons/bs";
-import { useReplies } from "../../../hooks/useReplies";
-import {
-  ReplyInterface,
-  ThreadReplyInterface,
-} from "../../../types/RepliesItemsProps";
+import { ChatIcon } from "@chakra-ui/icons";
+import { useCreateReply } from "../../../hooks/useCreateReply";
+import { useThreadReplies } from "../../../hooks/useThreadsReplies";
+import { ReplyInterface } from "../../../types/RepliesItemsProps";
 
 export default function ThreadReplies() {
   const navigate = useNavigate();
-  const { threadData, isLoading } = useThreads();
-  const { replyData, isLoading: replyLoading } = useReplies();
-
-  const { id } = useParams();
-
-  // Filter the threadData
-  const filteredThreadData = threadData
-    ? threadData.filter(
-        (thread: ThreadReplyInterface) => thread.id === Number(id)
-      )
-    : [];
-
-  const filteredReplyData = replyData
-    ? replyData.filter(
-        (reply: ReplyInterface) => reply.thread_id.id === Number(id)
-      )
-    : [];
-
-  const { image, content, user_id, created_at, numOfLikes, numOfReplies } =
-    filteredThreadData[0] || {};
+  const { threadReply, isLoading } = useThreadReplies();
+  const { form, handleChange, handleReply } = useCreateReply();
+  
+  if (isLoading) return <Spinner />;
+  console.log(threadReply);
 
   const options = {
     year: "numeric" as const,
@@ -54,14 +39,14 @@ export default function ThreadReplies() {
     minute: "2-digit" as const,
   };
   let formattedDate;
-  if (created_at) {
-    const unformattedDate = new Date(created_at);
+
+  if (threadReply.created_at) {
+    const unformattedDate = new Date(threadReply.created_at);
     formattedDate = new Intl.DateTimeFormat("en-US", options).format(
       unformattedDate
     );
   }
 
-  if (isLoading || replyLoading) return <Spinner />;
 
   return (
     <Box>
@@ -77,7 +62,7 @@ export default function ThreadReplies() {
             <HStack>
               <Avatar
                 name="avatar"
-                src={user_id.profile_picture}
+                src={threadReply.user_id.profile_picture}
                 size="sm"
                 mr="3"
                 _hover={{
@@ -92,7 +77,7 @@ export default function ThreadReplies() {
                     cursor: "pointer",
                   }}
                 >
-                  {user_id.full_name}
+                  {threadReply.user_id.full_name}
                 </Text>
               </Box>
               <Text color="gray.600">&bull;</Text>
@@ -107,25 +92,25 @@ export default function ThreadReplies() {
                 <Image
                   boxSize="300px"
                   objectFit="cover"
-                  src={image}
+                  src={threadReply.image}
                   alt="Dan Abramov"
                   rounded="md"
                 />
               </Box>
 
               <Box my="2">
-                <Text fontSize="0.86rem">{content}</Text>
+                <Text fontSize="0.86rem">{threadReply.content}</Text>
               </Box>
               <Box>
                 <HStack fontSize="xs">
                   <HStack>
                     <BsHeart />
-                    <Text>{numOfLikes}</Text>
+                    <Text>10</Text>
                   </HStack>
 
                   <HStack>
                     <BiMessageAltDetail />
-                    <Text>{numOfReplies} Replies</Text>
+                    <Text>{threadReply.replies.length} Replies</Text>
                   </HStack>
                 </HStack>
               </Box>
@@ -152,7 +137,29 @@ export default function ThreadReplies() {
             <StackDivider w="85%" alignSelf="center" borderColor="gray.500" />
           }
         >
-          {filteredReplyData.map((reply: ReplyInterface) => (
+          <Box display={"flex"} mx={"8"}>
+            <InputGroup>
+              <Input
+                type="text"
+                placeholder=""
+                name="content"
+                borderRightRadius="none"
+                borderRight="none"
+                borderColor="gray.500"
+                onChange={handleChange}
+              />
+            </InputGroup>
+            <Button
+              bgColor="green.500"
+              borderLeftRadius="none"
+              _hover={{ cursor: "pointer" }}
+              onClick={() => handleReply.mutate(form)}
+            >
+              <ChatIcon color="gray.100" ms="2" />
+              <Text mx="2">Send Reply</Text>
+            </Button>
+          </Box>
+          {threadReply.replies.map((reply: ReplyInterface) => (
             <Box key={reply.id} px="12" pt="3">
               <Box display="flex" gap="8px">
                 <Avatar
@@ -168,7 +175,7 @@ export default function ThreadReplies() {
                   {reply.user_id.full_name}
                 </Text>
               </Box>
-              <Box px={12} py={5}>
+              <Box px={12} py={3}>
                 {reply.image && (
                   <Image
                     src={reply.image}
