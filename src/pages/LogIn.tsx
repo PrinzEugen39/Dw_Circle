@@ -7,13 +7,18 @@ import {
   FormLabel,
   Text,
   Link,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../features/auth/hooks/useLogin";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { handleChange, handleLogin } = useLogin();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
   return (
     <Flex
@@ -38,16 +43,28 @@ const Login = () => {
         </Heading>
         <FormLabel>Email</FormLabel>
         <Input
-          color={"gray.900"}
           placeholder="yourmail@gmail.com"
           type="email"
           name="email"
-          variant="filled"
           mb={3}
           onChange={handleChange}
         />
         <FormLabel>Password</FormLabel>
-        <Input
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type={show ? "text" : "password"}
+            placeholder="Enter password"
+            name="password"
+            onChange={handleChange}
+          />
+          <InputRightElement width="4.5rem">
+            <Button h="1.75rem" size="sm" onClick={handleClick}>
+              {show ? "Hide" : "Show"}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+        {/* <Input
           color={"gray.900"}
           placeholder="**********"
           type="password"
@@ -55,8 +72,8 @@ const Login = () => {
           variant="filled"
           mb={6}
           onChange={handleChange}
-        />
-        <Button colorScheme="teal" mb={8} onClick={handleLogin}>
+        /> */}
+        <Button colorScheme="teal" my={8} onClick={handleLogin}>
           Log In
         </Button>
         <FormControl display="flex" alignItems="center">

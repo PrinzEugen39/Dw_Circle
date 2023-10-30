@@ -1,12 +1,11 @@
 import Sidebar from "../components/Sidebar";
-import Profile from "../features/profile/profileSidebar/ProfileSidebar";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 
-export default function AppLayout() {
+export default function ProfileLayout() {
   return (
     <Box>
-      <Grid templateColumns="0.6fr 2fr 1fr" height={"100vh"}>
+      <Grid templateColumns="0.6fr 3fr" height={"100vh"}>
         <GridItem
           as="aside"
           //   colSpan={2}
@@ -27,15 +26,6 @@ export default function AppLayout() {
           overflowY="auto"
         >
           <Outlet />
-        </GridItem>
-        <GridItem
-          as="div"
-          bg="gray.800"
-          //   colSpan={2}
-          minHeight="100vh"
-          p="2rem"
-        >
-          <Profile />
         </GridItem>
       </Grid>
     </Box>

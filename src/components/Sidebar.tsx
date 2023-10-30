@@ -37,19 +37,19 @@ export default function Sidebar() {
           <Box display={"flex"} alignItems="center">
             <BiSearchAlt />
             <ListItem ms={3}>
-              <NavLink to="/">Search.</NavLink>
+              <NavLink to="/search">Search.</NavLink>
             </ListItem>
           </Box>
           <Box display={"flex"} alignItems="center">
             <BiHeart />
             <ListItem ms={3}>
-              <NavLink to="/">Follows.</NavLink>
+              <NavLink to="/follows">Follows.</NavLink>
             </ListItem>
           </Box>
           <Box display={"flex"} alignItems="center">
             <BiUserCircle />
             <ListItem ms={3}>
-              <NavLink to="/">Profile.</NavLink>
+              <NavLink to="/profile">Profile.</NavLink>
             </ListItem>
           </Box>
         </List>

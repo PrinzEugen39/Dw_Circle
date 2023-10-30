@@ -10,6 +10,10 @@ import { useEffect, useState } from "react";
 import axiosApi, { setAuthToken } from "./config/axiosApi";
 import { useDispatch } from "react-redux";
 import { AUTH_CHECK, AUTH_ERROR } from "./store/RootReducer";
+import Follows from "./pages/Follows";
+import Search from "./pages/Search";
+import ProfileLayout from "./layout/ProfileLayout";
+import Profile from "./pages/Profile";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -37,7 +41,7 @@ export default function App() {
       navigate("/auth/login");
     }
   }
-  
+
   useEffect(() => {
     if (localStorage.token) {
       authCheck();
@@ -45,11 +49,16 @@ export default function App() {
       setIsLoading(false);
     }
   }, []);
-  
+
   function IsNotLogin() {
     if (!localStorage.token) {
       return <Navigate replace to="auth/login" />;
     } else return <AppLayout />;
+  }
+  function IsNotLogin2() {
+    if (!localStorage.token) {
+      return <Navigate replace to="auth/login" />;
+    } else return <ProfileLayout />;
   }
 
   return (
@@ -63,6 +72,11 @@ export default function App() {
           <Route index element={<Navigate replace to="threads" />} />
           <Route path="threads" element={<Thread />} />
           <Route path="threads/:id" element={<ThreadReplies />} />
+          <Route path="follows" element={<Follows />} />
+          <Route path="search" element={<Search />} />
+        </Route>
+        <Route element={<IsNotLogin2 />}>
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </QueryClientProvider>

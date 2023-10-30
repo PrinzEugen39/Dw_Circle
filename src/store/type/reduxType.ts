@@ -4,4 +4,5 @@ export interface IReduxUser {
     full_name: string;
     email: string;
     profile_picture: string;
+    password: string;
   }

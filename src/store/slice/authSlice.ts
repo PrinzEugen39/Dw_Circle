@@ -8,6 +8,7 @@ const initialState:IReduxUser ={
     full_name: "",
     email: "",
     profile_picture: "",
+    password: "",
 }
 
 export const authSlice = createSlice({
@@ -25,7 +26,8 @@ export const authSlice = createSlice({
                 username: payload.username,
                 full_name: payload.full_name,
                 email: payload.email,
-                profile_picture: payload.profile_picture
+                profile_picture: payload.profile_picture,
+                password: payload.password
             }
 
             return user;
@@ -39,7 +41,8 @@ export const authSlice = createSlice({
                 username: payload.username,
                 full_name: payload.full_name,
                 email: payload.email,
-                profile_picture: payload.profile_picture
+                profile_picture: payload.profile_picture,
+                password: payload.password
             }
 
             return user;

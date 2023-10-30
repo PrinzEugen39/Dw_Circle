@@ -3,7 +3,7 @@ import { IUserLogin } from "../../../types/UserProps";
 import axiosApi from "../../../config/axiosApi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { AUTH_LOGIN } from "../../../store/RootReducer";
+import { AUTH_CHECK, AUTH_LOGIN } from "../../../store/RootReducer";
 import useToast from "../../../hooks/useToast";
 
 export function useLogin() {
@@ -24,14 +24,15 @@ export function useLogin() {
   async function handleLogin() {
     try {
       const response = await axiosApi.post("/auth/login", form);
-      console.log(response?.data);
       dispatch(AUTH_LOGIN(response?.data))
+      dispatch(AUTH_CHECK(response?.data.user))
 
       if (response) toast("Success", "Login success", "success")
       
       navigate("/threads");
     } catch (error) {
       console.log(error);
+      if (error) toast("Error", `${error}`, "error")
     }
   }
 

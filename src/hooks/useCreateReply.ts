@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosApi from "../config/axiosApi";
 import useToast from "./useToast";
@@ -11,36 +11,61 @@ export function useCreateReply() {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<UseCreateReplyProps>({
     content: "",
-    user_id: 5,
+    image: "",
     thread_id: Number(id),
   });
+  const [file, setFile] = useState<File | null>(null);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value, files } = event.target;
+
+    if (files) {
+      console.log("masukfile" + files);
+  
+      setFile(files[0]);
+    } else {
+      setForm({
+        ...form,
+        [name]: value,
+      });
+    }
+  }
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  function handleButtonClick() {
+    fileInputRef.current?.click();
   }
 
-  const handleReply = useMutation({
-    mutationFn:  (newReply: UseCreateReplyProps) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => {
+      const formData = new FormData();
 
-      return axiosApi.post("/replies", newReply);
+      formData.append("content", form.content);
+      formData.append("image", file as File);
+      formData.append("thread_id", form.thread_id.toString());
+
+      return axiosApi.post("/replies", formData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["thread-reply", id]});
+      queryClient.invalidateQueries({ queryKey: ["thread-reply", id] });
       toast("Success", "Reply posted successfully", "success");
       setForm({
         content: "",
-        user_id: 5,
+        image: "",
         thread_id: Number(id),
       });
     },
     onError: (err) => {
       console.log(err);
-
       toast("Error", err.message, "warning");
     },
   });
-  return { form, handleChange, handleReply };
+
+  return {
+    form,
+    handleChange,
+    mutate,
+    isPending,
+    handleButtonClick,
+    fileInputRef,
+  };
 }

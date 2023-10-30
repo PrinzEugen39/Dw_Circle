@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { UseThreadProps } from "../types/ThreadItemsProps";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosApi from "../config/axiosApi";
@@ -10,17 +10,17 @@ export function useCreateThread() {
   const [form, setForm] = useState<UseThreadProps>({
     content: "",
     image: "",
-    user_id: 6,
   });
+  const [file, setFile] = useState<File | null>(null);
+
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value, files } = event.target;
 
     if (files) {
-      setForm({
-        ...form,
-        [name]: files[0],
-      });
+      console.log("masukfile" + files);
+      
+      setFile(files[0]);
     } else {
       setForm({
         ...form,
@@ -28,12 +28,20 @@ export function useCreateThread() {
       });
     }
   }
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  function handleButtonClick() {
+    fileInputRef.current?.click()
+  }
 
-  const handlePost = useMutation({
-    mutationFn: async (newThread: UseThreadProps) => {
-      console.log(newThread);
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData()
 
-      return await axiosApi.post("/thread", newThread);
+      formData.append("content", form.content)
+      formData.append("image", file as File);
+      
+      return await axiosApi.post("/thread", formData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["thread-posts"] });
@@ -41,28 +49,13 @@ export function useCreateThread() {
       setForm({
         content: "",
         image: "",
-        user_id: 6,
       });
     },
     onError: (err) => {
       console.log(err);
-
       toast("Error", err.message, "warning");
     },
   });
 
-  // async function handlePost2(event: FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-
-  //   const formData = new FormData();
-  //   formData.append("content", form.content);
-  //   formData.append("image", form.image as File);
-
-  //   const response = await API.post("/thread", form);
-  // }
-
-  // const useFileRef = useRef<HTMLInputElement>(null)
-
-
-  return { form, handleChange, handlePost };
+  return { form, handleChange, mutate, isPending, fileInputRef, handleButtonClick };
 }

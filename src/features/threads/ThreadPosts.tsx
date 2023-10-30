@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormLabel,
   HStack,
   IconButton,
   Input,
@@ -19,13 +20,19 @@ import { useCreateThread } from "../../hooks/useCreateThread";
 
 export default function ThreadPosts() {
   const { threadData, isLoading } = useThreads();
-  const { form, handleChange, handlePost } = useCreateThread();
+  const { handleChange, mutate, isPending, handleButtonClick, fileInputRef } = useCreateThread();
 
   if (isLoading) return <Spinner />;
 
   return (
     <Flex direction="column" color={"gray.100"}>
-      <form encType="multipart/form-data" onSubmit={() => handlePost.mutate(form)}>
+      <form
+        encType="multipart/form-data"
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutate();
+        }}
+      >
         <FormControl>
           <HStack maxW={"6xl"} justifyContent={"center"} gap={5}>
             <Avatar
@@ -40,8 +47,25 @@ export default function ThreadPosts() {
               name="content"
               onChange={handleChange}
             />
-            <IconButton aria-label="Search database" icon={<BiImageAdd />} />
-            <Button colorScheme="green" type="submit">
+            <FormLabel htmlFor="image" pos="relative" mt="2">
+              <IconButton aria-label="addImage" icon={<BiImageAdd />} onClick={handleButtonClick} />
+              <Input
+                ref={fileInputRef}
+                onChange={handleChange}
+                type="file"
+                name="image"
+                id="image"
+                style={{
+                  opacity: "0",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  cursor: "pointer",
+                }}
+              />
+            </FormLabel>
+
+            <Button colorScheme="green" type="submit" isLoading={isPending}>
               Post
             </Button>
           </HStack>
@@ -65,7 +89,7 @@ export default function ThreadPosts() {
                 content={thread.content}
                 image={thread.image}
                 date={thread.created_at}
-                likes={thread.numOfLikes}
+                likes={thread.like}
                 replies={thread.numOfReplies}
               />
             </Box>

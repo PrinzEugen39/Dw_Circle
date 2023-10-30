@@ -7,10 +7,6 @@ import {
   HStack,
   Heading,
   Image,
-  Input,
-  InputGroup,
-  Stack,
-  StackDivider,
   Text,
   chakra,
 } from "@chakra-ui/react";
@@ -18,18 +14,14 @@ import Spinner from "../../../components/Spinner";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { BsHeart } from "react-icons/bs";
-import { ChatIcon } from "@chakra-ui/icons";
-import { useCreateReply } from "../../../hooks/useCreateReply";
+import ThreadRepliesForm from "./ThreadRepliesForm";
 import { useThreadReplies } from "../../../hooks/useThreadsReplies";
-import { ReplyInterface } from "../../../types/RepliesItemsProps";
 
 export default function ThreadReplies() {
   const navigate = useNavigate();
   const { threadReply, isLoading } = useThreadReplies();
-  const { form, handleChange, handleReply } = useCreateReply();
-  
+
   if (isLoading) return <Spinner />;
-  console.log(threadReply);
 
   const options = {
     year: "numeric" as const,
@@ -46,7 +38,6 @@ export default function ThreadReplies() {
       unformattedDate
     );
   }
-
 
   return (
     <Box>
@@ -69,7 +60,6 @@ export default function ThreadReplies() {
                   cursor: "pointer",
                 }}
               />
-
               <Box>
                 <Text
                   fontWeight="semibold"
@@ -88,15 +78,17 @@ export default function ThreadReplies() {
               </Box>
             </HStack>
             <Box ms="3rem">
-              <Box mt="0.5rem">
-                <Image
-                  boxSize="300px"
-                  objectFit="cover"
-                  src={threadReply.image}
-                  alt="Dan Abramov"
-                  rounded="md"
-                />
-              </Box>
+              {threadReply.image && (
+                <Box mt="0.5rem">
+                  <Image
+                    boxSize="300px"
+                    objectFit="cover"
+                    src={threadReply.image}
+                    alt="Dan Abramov"
+                    rounded="md"
+                  />
+                </Box>
+              )}
 
               <Box my="2">
                 <Text fontSize="0.86rem">{threadReply.content}</Text>
@@ -125,73 +117,7 @@ export default function ThreadReplies() {
           </AbsoluteCenter>
         </Box>
       </Box>
-      <Box color={"gray.100"}>
-        <Stack
-          borderRadius="xl"
-          bgColor="gray.700"
-          maxW="80%"
-          mx="auto"
-          flex="1"
-          py="5"
-          divider={
-            <StackDivider w="85%" alignSelf="center" borderColor="gray.500" />
-          }
-        >
-          <Box display={"flex"} mx={"8"}>
-            <InputGroup>
-              <Input
-                type="text"
-                placeholder=""
-                name="content"
-                borderRightRadius="none"
-                borderRight="none"
-                borderColor="gray.500"
-                onChange={handleChange}
-              />
-            </InputGroup>
-            <Button
-              bgColor="green.500"
-              borderLeftRadius="none"
-              _hover={{ cursor: "pointer" }}
-              onClick={() => handleReply.mutate(form)}
-            >
-              <ChatIcon color="gray.100" ms="2" />
-              <Text mx="2">Send Reply</Text>
-            </Button>
-          </Box>
-          {threadReply.replies.map((reply: ReplyInterface) => (
-            <Box key={reply.id} px="12" pt="3">
-              <Box display="flex" gap="8px">
-                <Avatar
-                  name="avatar"
-                  src={reply.user_id.profile_picture}
-                  size="sm"
-                  mr="3"
-                  _hover={{
-                    cursor: "pointer",
-                  }}
-                />
-                <Text fontWeight="semibold" fontSize="lg">
-                  {reply.user_id.full_name}
-                </Text>
-              </Box>
-              <Box px={12} py={3}>
-                {reply.image && (
-                  <Image
-                    src={reply.image}
-                    boxSize="200px"
-                    objectFit="cover"
-                    alt="Dan Abramov"
-                    rounded="md"
-                    mb={3}
-                  />
-                )}
-                <Text fontSize="sm">{reply.content}</Text>
-              </Box>
-            </Box>
-          ))}
-        </Stack>
-      </Box>
+      <ThreadRepliesForm threadReply={threadReply}/>
     </Box>
   );
 }

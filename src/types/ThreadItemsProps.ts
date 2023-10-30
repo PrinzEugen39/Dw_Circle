@@ -1,3 +1,10 @@
+type LikePostProps = {
+  id?: number;
+  user_id :{
+    id: number;
+  }
+}
+
 export type ThreadPostsProps = {
   id?: number;
   content: string;
@@ -7,6 +14,7 @@ export type ThreadPostsProps = {
     full_name: string;
     profile_picture: string;
   };
+  like: LikePostProps[]
   numOfLikes: number;
   numOfReplies: number;
 };
@@ -18,14 +26,13 @@ export type ThreadItemsProps = {
   content: string;
   image: string;
   date: string;
-  likes: number;
+  likes: LikePostProps[];
   replies: number;
 };
 
 export type UseThreadProps = {
   content: string,
   image: string,
-  user_id: number,
 }
 // export type ThreadItemsPropsv1 = {
 //     id?: number;

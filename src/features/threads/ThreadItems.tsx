@@ -4,6 +4,11 @@ import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { ThreadItemsProps } from "../../types/ThreadItemsProps";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axiosApi from "../../config/axiosApi";
+import useToast from "../../hooks/useToast";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/type/RootState";
 
 export default function ThreadItems({
   id,
@@ -15,16 +20,37 @@ export default function ThreadItems({
   likes,
   replies,
 }: ThreadItemsProps) {
-  const [like, setLike] = useState<boolean>(false);
+  const [likeId, setLikeId] = useState({
+    threads_id: id,
+  });
+  const userId = useSelector((state: RootState) => state?.auth);
+
+  const toast = useToast();
+  const queryClient = useQueryClient();
+
+  const { mutate: handleLike } = useMutation({
+    mutationFn: () => {
+      return axiosApi.post(`likes`, likeId);
+    },
+    onSuccess: () => {
+      toast("Success", "LIKEE", "success");
+      queryClient.invalidateQueries({ queryKey: ["thread-posts"] });
+    },
+    onError: (err) => {
+      console.log(err);
+
+      toast("Error", err.message, "error");
+    },
+  });
 
   function handleClick() {
-    setLike(!like);
+    setLikeId({ threads_id: id });
+    handleLike();
   }
 
   const unformattedDate = new Date(date);
 
   const options = {
-    year: "numeric" as const,
     month: "long" as const,
     day: "numeric" as const,
     hour: "2-digit" as const,
@@ -84,8 +110,12 @@ export default function ThreadItems({
           <Box>
             <HStack fontSize="xs">
               <HStack onClick={handleClick}>
-                {like ? <BsHeartFill /> : <BsHeart />}
-                <Text>{likes}</Text>
+                {likes.map((like) => like.user_id.id).includes(userId.id) ? (
+                  <BsHeartFill />
+                ) : (
+                  <BsHeart />
+                )}
+                <Text>{likes.length}</Text>
               </HStack>
               <Link to={`/threads/${id}`}>
                 <HStack>

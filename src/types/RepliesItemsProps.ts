@@ -55,6 +55,6 @@ export interface ThreadReplyInterface {
 
 export type UseCreateReplyProps = {
   content: string,
-  user_id: number,
   thread_id: number,
+  image?: string,
 }
