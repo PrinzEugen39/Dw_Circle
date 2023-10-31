@@ -6,7 +6,7 @@ import AppLayout from "./layout/AppLayout";
 import Thread from "./pages/Thread";
 import Login from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axiosApi, { setAuthToken } from "./config/axiosApi";
 import { useDispatch } from "react-redux";
 import { AUTH_CHECK, AUTH_ERROR } from "./store/RootReducer";
@@ -25,7 +25,6 @@ const client = new QueryClient({
 
 export default function App() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,7 +33,6 @@ export default function App() {
       setAuthToken(localStorage.token);
       const response = await axiosApi.get("/auth/check");
       dispatch(AUTH_CHECK(response?.data.user));
-      setIsLoading(false);
     } catch (error) {
       dispatch(AUTH_ERROR());
       console.log("auth check", error);
@@ -43,11 +41,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (localStorage.token) {
-      authCheck();
-    } else {
-      setIsLoading(false);
-    }
+    if (localStorage.token) authCheck();
   }, []);
 
   function IsNotLogin() {

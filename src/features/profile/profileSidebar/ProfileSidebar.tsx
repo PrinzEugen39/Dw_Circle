@@ -61,15 +61,15 @@ export default function ProfileSidebar() {
             @{user?.username}
           </Text>
           <Text fontSize="sm" color="whiteAlpha.800">
-            GG GEMINK
+            {user?.profile_description}
           </Text>
           <HStack fontSize="sm">
             <HStack>
-              <Text color="whiteAlpha.800">420</Text>
+              <Text color="whiteAlpha.800">{user?.numfollowing}</Text>
               <Text color="whiteAlpha.600">Following</Text>
             </HStack>
             <HStack>
-              <Text color="whiteAlpha.800">212</Text>
+              <Text color="whiteAlpha.800">{user?.numfollowers}</Text>
               <Text color="whiteAlpha.600">Followers</Text>
             </HStack>
           </HStack>

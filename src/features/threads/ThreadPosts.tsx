@@ -17,10 +17,13 @@ import { ThreadPostsProps } from "../../types/ThreadItemsProps";
 import Spinner from "../../components/Spinner";
 import { useThreads } from "../../hooks/useThread";
 import { useCreateThread } from "../../hooks/useCreateThread";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/type/RootState";
 
 export default function ThreadPosts() {
   const { threadData, isLoading } = useThreads();
   const { handleChange, mutate, isPending, handleButtonClick, fileInputRef } = useCreateThread();
+  const user = useSelector((state: RootState) => state?.auth);
 
   if (isLoading) return <Spinner />;
 
@@ -38,7 +41,7 @@ export default function ThreadPosts() {
             <Avatar
               size="sm"
               name="Dan Abrahmov"
-              src="https://bit.ly/dan-abramov"
+              src={user?.profile_picture}
             />
             <Input
               variant="flushed"

@@ -8,6 +8,7 @@ import {
   IconButton,
   Image,
   Input,
+  Textarea,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 
@@ -25,6 +26,10 @@ export default function UserProfile() {
         <Input type="text" name="fullName" defaultValue={user?.full_name} />
       </FormControl>
       <FormControl isRequired mb="20px">
+        <FormLabel>Status: </FormLabel>
+        <Textarea name="bio" defaultValue={user?.profile_description} />
+      </FormControl>
+      <FormControl isRequired mb="20px">
         <FormLabel>Profile picture: </FormLabel>
         <Box position="relative" display="inline-block">
           <IconButton
@@ -40,7 +45,7 @@ export default function UserProfile() {
           />
 
           <Image
-            src={user?.profile_picture}
+            src={user.profile_picture}
             boxSize="180px"
             objectFit="cover"
             rounded="lg"
