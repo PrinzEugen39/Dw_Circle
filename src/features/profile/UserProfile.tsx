@@ -3,47 +3,28 @@ import { RootState } from "../../store/type/RootState";
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
   FormLabel,
   IconButton,
   Image,
   Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
 
 export default function UserProfile() {
-  const [editProfile, setEditProfile] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state?.auth);
 
   return (
     <Box maxW="480px">
-      <FormControl display="flex" alignItems="center" my="20px">
-        <Checkbox
-          size="lg"
-          colorScheme="purple"
-          isChecked={editProfile}
-          onChange={() => setEditProfile((edit) => !edit)}
-        />
-        <FormLabel ml="10px" mb="0">
-          Edit Profile
-        </FormLabel>
-      </FormControl>
-
-      <FormControl isRequired mb="20px" isDisabled={!editProfile}>
+      <FormControl isRequired mb="20px">
         <FormLabel>Username: </FormLabel>
-        <Input type="text" name="title" defaultValue={user?.username} />
+        <Input type="text" name="userName" defaultValue={user?.username} />
       </FormControl>
-      <FormControl isRequired mb="20px" isDisabled={!editProfile}>
+      <FormControl isRequired mb="20px">
         <FormLabel>Full name: </FormLabel>
-        <Input type="text" name="title" defaultValue={user?.full_name} />
+        <Input type="text" name="fullName" defaultValue={user?.full_name} />
       </FormControl>
-      <FormControl isRequired mb="20px" isDisabled={!editProfile}>
-        <FormLabel>Email: </FormLabel>
-        <Input type="email" name="title" defaultValue={user?.email} />
-      </FormControl>
-      <FormControl isRequired mb="20px" isDisabled={!editProfile}>
+      <FormControl isRequired mb="20px">
         <FormLabel>Profile picture: </FormLabel>
         <Box position="relative" display="inline-block">
           <IconButton
@@ -57,6 +38,7 @@ export default function UserProfile() {
             opacity={0}
             _hover={{ opacity: 1, zIndex: "10" }}
           />
+
           <Image
             src={user?.profile_picture}
             boxSize="180px"

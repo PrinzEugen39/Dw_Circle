@@ -33,7 +33,6 @@ export default function ThreadItems({
       return axiosApi.post(`likes`, likeId);
     },
     onSuccess: () => {
-      toast("Success", "LIKEE", "success");
       queryClient.invalidateQueries({ queryKey: ["thread-posts"] });
     },
     onError: (err) => {
