@@ -12,15 +12,14 @@ import Suggestion from "./Suggestion";
 import DevelopedBy from "./DevelopedBy";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/type/RootState";
-
+import { Link } from "react-router-dom";
 
 export default function ProfileSidebar() {
   const user = useSelector((state: RootState) => state?.auth);
-  
+
   return (
     <Box display="flex" flexDirection="column" gap={5}>
-      <Card bg="whiteAlpha.200" p={4} minW="400px">
-        <Text color="white">My Profile</Text>
+      <Card bg="whiteAlpha.200" px={4} py="2" minW="400px">
         <Box
           pos="relative"
           h="70px"
@@ -40,17 +39,19 @@ export default function ProfileSidebar() {
           </Box>
         </Box>
         <Flex justify="right" mt={-6}>
-          <Button
-            colorScheme="whiteAlpha"
-            color="white"
-            size="xs"
-            rounded="full"
-            variant="outline"
-            mt={8}
-            w="fit-content"
-          >
-            Edit Profile
-          </Button>
+          <Link to="/profile">
+            <Button
+              colorScheme="whiteAlpha"
+              color="white"
+              size="xs"
+              rounded="full"
+              variant="outline"
+              mt={8}
+              w="fit-content"
+            >
+              Edit Profile
+            </Button>
+          </Link>
         </Flex>
 
         <Stack spacing={0}>

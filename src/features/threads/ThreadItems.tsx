@@ -65,7 +65,6 @@ export default function ThreadItems({
       <Box px="1rem">
         <HStack>
           <Avatar
-            name={content}
             src={userphoto}
             size="sm"
             mr="3"

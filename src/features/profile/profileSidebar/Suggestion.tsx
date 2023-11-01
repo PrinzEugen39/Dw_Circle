@@ -1,61 +1,36 @@
-import { Box, Button, Card, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Card, Spinner, Text } from "@chakra-ui/react";
+import useUsers from "../../../hooks/useUsers";
+import SuggestionItems from "./SuggestionItems";
+import { RootState } from "../../../store/type/RootState";
+import { useSelector } from "react-redux";
+
+// interface UserSuggest {
+//   id: number;
+//   username: string;
+//   full_name: string;
+// }
 
 export default function Suggestion() {
+  const { userLists, isLoading } = useUsers();
+  const SignedInuser = useSelector((state: RootState) => state?.auth);
+
+  const List = userLists?.filter((user: any) => user.id !== SignedInuser.id);
+
+  if (isLoading) return <Spinner />;
   return (
-    <Card bg="whiteAlpha.200" p={4} minW="400px">
+    <Card bg="whiteAlpha.200" p={4} minW="380px">
       <Text color="white">Suggested for you</Text>
 
-      <HStack spacing={0} justifyContent={"space-between"} px={2}>
-        <Box>
-          <Flex flexDirection="column">
-            <Text mt={3} fontSize="sm" fontWeight="semibold" color="white">
-              Andri Subagja
-            </Text>
-            <Text fontSize="xs" color="whiteAlpha.600">
-              @sigoblog
-            </Text>
-          </Flex>
-        </Box>
-        <Box>
-          <Button
-            colorScheme="whiteAlpha"
-            color="white"
-            size="xs"
-            rounded="full"
-            variant="outline"
-            mt={8}
-            w="fit-content"
-          >
-            Follow
-          </Button>
-        </Box>
-      </HStack>
-
-      <HStack spacing={0} justifyContent={"space-between"} px={2}>
-        <Box>
-          <Flex flexDirection="column">
-            <Text mt={3} fontSize="sm" fontWeight="semibold" color="white">
-              Heri Nozi
-            </Text>
-            <Text fontSize="xs" color="whiteAlpha.600">
-              @ozi3
-            </Text>
-          </Flex>
-        </Box>
-        <Box>
-          <Button
-            colorScheme="whiteAlpha"
-            color="white"
-            size="xs"
-            rounded="full"
-            variant="outline"
-            mt={8}
-            w="fit-content"
-          >
-            Follow
-          </Button>
-        </Box>
-      </HStack>
+      <Box overflowY="auto" h="10rem">
+        {List.map((user: any) => (
+          <SuggestionItems
+            user_id={user.id}
+            username={user.username}
+            fullname={user.full_name}
+            key={user.id}
+          />
+        ))}
+      </Box>
     </Card>
   );
 }

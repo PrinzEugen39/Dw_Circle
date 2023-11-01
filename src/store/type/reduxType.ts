@@ -1,3 +1,11 @@
+interface follower {
+  id: number;
+}
+
+interface following {
+  id: number;
+}
+
 export interface IReduxUser {
     id: number;
     username: string;
@@ -6,6 +14,8 @@ export interface IReduxUser {
     profile_picture: string;
     password: string;
     profile_description: string;
+    following: follower[]
+    followers: following[]
     numfollowers: number;
     numfollowing: number;
   }

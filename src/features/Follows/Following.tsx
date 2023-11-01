@@ -30,7 +30,7 @@ export default function Following() {
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4">
             {following?.map((follower: any) => (
-              <Box>
+              <Box key={follower.id}>
                 <Flex gap="4">
                   <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
                     <Avatar

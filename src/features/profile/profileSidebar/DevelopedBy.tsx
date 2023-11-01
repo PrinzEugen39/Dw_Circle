@@ -8,8 +8,8 @@ export default function DevelopedBy() {
     as={Flex}
     basis="10%"
     direction="column"
-    gap={4}
-    p={4}
+    gap={1}
+    p={3}
     bg="gray.700"
     color="white"
   >

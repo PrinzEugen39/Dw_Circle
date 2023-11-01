@@ -64,15 +64,7 @@ const Login = () => {
             </Button>
           </InputRightElement>
         </InputGroup>
-        {/* <Input
-          color={"gray.900"}
-          placeholder="**********"
-          type="password"
-          name="password"
-          variant="filled"
-          mb={6}
-          onChange={handleChange}
-        /> */}
+
         <Button colorScheme="teal" my={8} onClick={handleLogin}>
           Log In
         </Button>

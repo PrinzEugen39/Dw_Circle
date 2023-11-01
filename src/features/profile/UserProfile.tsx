@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/type/RootState";
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
   FormLabel,
   IconButton,
-  Image,
   Input,
   Textarea,
 } from "@chakra-ui/react";
@@ -44,11 +44,11 @@ export default function UserProfile() {
             _hover={{ opacity: 1, zIndex: "10" }}
           />
 
-          <Image
+          <Avatar
             src={user.profile_picture}
             boxSize="180px"
             objectFit="cover"
-            rounded="lg"
+            rounded="full"
           />
         </Box>
       </FormControl>
