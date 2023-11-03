@@ -57,5 +57,5 @@ export function useCreateThread() {
     },
   });
 
-  return { form, handleChange, mutate, isPending, fileInputRef, handleButtonClick };
+  return { form, handleChange, mutate, isPending, fileInputRef, handleButtonClick, file, setFile };
 }

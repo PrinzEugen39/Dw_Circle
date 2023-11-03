@@ -23,9 +23,18 @@ interface ThreadRepliesFormProps {
   };
 }
 
-export default function ThreadRepliesForm({ threadReply }: ThreadRepliesFormProps) {
-  const { handleChange, mutate, isPending, handleButtonClick, fileInputRef } =
-    useCreateReply();
+export default function ThreadRepliesForm({
+  threadReply,
+}: ThreadRepliesFormProps) {
+  const {
+    handleChange,
+    mutate,
+    isPending,
+    handleButtonClick,
+    fileInputRef,
+    file,
+    setFile,
+  } = useCreateReply();
 
   return (
     <Box color={"gray.100"}>
@@ -48,16 +57,21 @@ export default function ThreadRepliesForm({ threadReply }: ThreadRepliesFormProp
           }}
         >
           <FormControl>
-            <HStack maxW={"sm"} mx="auto" justifyContent={"center"} alignItems="center" gap={1}>
+            <HStack
+              maxW={"sm"}
+              mx="auto"
+              justifyContent={"center"}
+              alignItems="center"
+              gap={1}
+            >
               <Input
                 placeholder="Reply to this thread"
                 maxW="25rem"
                 name="content"
                 onChange={handleChange}
               />
-              <FormLabel htmlFor="image" pos="relative" mt={2} >
+              <FormLabel htmlFor="image" pos="relative" mt={2}>
                 <IconButton
-                
                   aria-label="addImage"
                   icon={<BiImageAdd />}
                   onClick={handleButtonClick}
@@ -77,13 +91,33 @@ export default function ThreadRepliesForm({ threadReply }: ThreadRepliesFormProp
                   }}
                 />
               </FormLabel>
-              <Button colorScheme="green" type="submit" isLoading={isPending} leftIcon={<ChatIcon />} px={7}>
+              <Button
+                colorScheme="green"
+                type="submit"
+                isLoading={isPending}
+                leftIcon={<ChatIcon />}
+                px={7}
+              >
                 Reply
               </Button>
-
             </HStack>
           </FormControl>
         </form>
+        {file && (
+          <Box display="flex" justifyContent="center">
+            <Image
+              mt="20px"
+              h="140px"
+              w="auto"
+              objectFit="cover"
+              rounded="md"
+              src={URL.createObjectURL(file)}
+            />
+            <Button variant="unstyled" onClick={() => setFile(null)}>
+              x
+            </Button>
+          </Box>
+        )}
 
         {threadReply.replies.map((reply: ReplyInterface) => (
           <Box key={reply.id} px="12" pt="3">

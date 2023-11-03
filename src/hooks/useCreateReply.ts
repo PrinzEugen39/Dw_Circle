@@ -21,7 +21,7 @@ export function useCreateReply() {
 
     if (files) {
       console.log("masukfile" + files);
-  
+
       setFile(files[0]);
     } else {
       setForm({
@@ -67,5 +67,7 @@ export function useCreateReply() {
     isPending,
     handleButtonClick,
     fileInputRef,
+    file,
+    setFile,
   };
 }

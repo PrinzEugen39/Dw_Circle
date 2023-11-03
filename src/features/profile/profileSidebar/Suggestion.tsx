@@ -21,7 +21,7 @@ export default function Suggestion() {
     <Card bg="whiteAlpha.200" p={4} minW="380px">
       <Text color="white">Suggested for you</Text>
 
-      <Box overflowY="auto" h="10rem">
+      <Box overflowY="auto" h="15rem">
         {List.map((user: any) => (
           <SuggestionItems
             user_id={user.id}

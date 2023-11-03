@@ -7,6 +7,7 @@ import {
   FormLabel,
   HStack,
   IconButton,
+  Image,
   Input,
   Stack,
   StackDivider,
@@ -21,7 +22,16 @@ import { useFollowing } from "../Follows/useFollowing";
 
 export default function ThreadPosts() {
   const { threadData, isLoading } = useThreads();
-  const { handleChange, mutate, isPending, handleButtonClick, fileInputRef, form } = useCreateThread();
+  const {
+    handleChange,
+    mutate,
+    isPending,
+    handleButtonClick,
+    fileInputRef,
+    form,
+    file,
+    setFile,
+  } = useCreateThread();
   const { userFollowData: userProfileData } = useFollowing();
 
   if (isLoading) return <Spinner />;
@@ -51,7 +61,11 @@ export default function ThreadPosts() {
               value={form.content}
             />
             <FormLabel htmlFor="image" pos="relative" mt="2">
-              <IconButton aria-label="addImage" icon={<BiImageAdd />} onClick={handleButtonClick} />
+              <IconButton
+                aria-label="addImage"
+                icon={<BiImageAdd />}
+                onClick={handleButtonClick}
+              />
               <Input
                 ref={fileInputRef}
                 onChange={handleChange}
@@ -68,12 +82,36 @@ export default function ThreadPosts() {
               />
             </FormLabel>
 
-            <Button colorScheme="green" type="submit" isLoading={isPending}>
+            <Button
+              colorScheme="green"
+              type="submit"
+              isLoading={isPending}
+              onClick={() =>
+                setTimeout(() => {
+                  setFile(null);
+                }, 1000)
+              }
+            >
               Post
             </Button>
           </HStack>
         </FormControl>
       </form>
+      {file && (
+        <Box display="flex" justifyContent="center">
+          <Image
+            mt="20px"
+            h="200px"
+            w="auto"
+            objectFit="cover"
+            rounded="md"
+            src={URL.createObjectURL(file)}
+          />
+          <Button variant="unstyled" onClick={() => setFile(null)}>
+            x
+          </Button>
+        </Box>
+      )}
 
       <Stack
         flex="1"

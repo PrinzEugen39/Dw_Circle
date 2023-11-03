@@ -56,7 +56,7 @@ export default function UpdateUserPasswordForm() {
           <Button onClick={reset} type="reset">
             Cancel
           </Button>
-          <Button type="submit" isLoading={isUpdating}>
+          <Button type="submit" isLoading={isUpdating} colorScheme="green">
             Submit
           </Button>
         </Box>

@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import FormRow from "./FormRow";
-import { Box, Button, Input } from "@chakra-ui/react";
+import { Box, Button, Image, Input } from "@chakra-ui/react";
 import { useUpdateProfile } from "../features/profile/hooks/useUpdateProfile";
-import { useUserProfile } from "../hooks/useUserProfile";
-import Spinner from "./Spinner";
 
-export default function UpdateUserProfileForm() {
-  const { profileData, isLoading } = useUserProfile();
-
+export default function UpdateUserProfileForm({
+  profilePic,
+  username,
+  full_name,
+  bio,
+}: any) {
   const { register, handleSubmit, formState, reset } = useForm();
   const { errors } = formState;
 
@@ -18,16 +19,34 @@ export default function UpdateUserProfileForm() {
     updateUser();
   }
 
-  if (isLoading) return <Spinner />;
   return (
-    <Box w="540px" display={"flex"} flexDirection="column">
+    <Box
+      w="400px"
+      display={"flex"}
+      flexDirection="column"
+      bgColor="gray.700"
+      rounded="xl"
+      px="5"
+      py="9"
+    >
+      <Box display="flex" justifyContent="center">
+        <Image
+          h="140px"
+          w="auto"
+          objectFit="cover"
+          rounded="full"
+          src={profilePic}
+          border="4px"
+          borderColor="green.400"
+        />
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormRow
           label="Fullname"
           error={errors?.full_name?.message?.toString()}
         >
           <Input
-            defaultValue={profileData.full_name}
+            defaultValue={full_name}
             type="text"
             isDisabled={isUpdating}
             id="full_name"
@@ -38,7 +57,7 @@ export default function UpdateUserProfileForm() {
         </FormRow>
         <FormRow label="Username" error={errors?.username?.message?.toString()}>
           <Input
-            defaultValue={profileData.username}
+            defaultValue={username}
             type="text"
             id="username"
             isDisabled={isUpdating}
@@ -52,7 +71,7 @@ export default function UpdateUserProfileForm() {
           error={errors?.profile_description?.message?.toString()}
         >
           <Input
-            defaultValue={profileData.profile_description}
+            defaultValue={bio}
             type="text"
             id="profile_description"
             isDisabled={isUpdating}
@@ -70,7 +89,7 @@ export default function UpdateUserProfileForm() {
           <Button onClick={reset} type="reset">
             Cancel
           </Button>
-          <Button type="submit" isLoading={isUpdating}>
+          <Button type="submit" isLoading={isUpdating} colorScheme="green">
             Submit
           </Button>
         </Box>
