@@ -5,18 +5,21 @@ import {
   Card,
   Flex,
   HStack,
+  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import Suggestion from "./Suggestion";
 import DevelopedBy from "./DevelopedBy";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/type/RootState";
 import { Link } from "react-router-dom";
+import { useUserProfile } from "../../../hooks/useUserProfile";
 
 export default function ProfileSidebar() {
-  const user = useSelector((state: RootState) => state?.auth);
-
+  const { profileData, isLoading } = useUserProfile();
+  
+  if (isLoading) return <Spinner />;
+  const { followers, following } = profileData;
+ 
   return (
     <Box display="flex" flexDirection="column" gap={5}>
       <Card bg="whiteAlpha.200" px={4} py="2" minW="400px">
@@ -35,7 +38,7 @@ export default function ProfileSidebar() {
             bg="blackAlpha.800"
             rounded="full"
           >
-            <Avatar size="md" src={user?.profile_picture} />
+            <Avatar size="md" src={profileData.profile_picture} />
           </Box>
         </Box>
         <Flex justify="right" mt={-6}>
@@ -56,21 +59,21 @@ export default function ProfileSidebar() {
 
         <Stack spacing={0}>
           <Text mt={3} fontSize="lg" fontWeight="semibold" color="white">
-            😁 {user?.full_name}
+            😁 {profileData?.full_name}
           </Text>
           <Text fontSize="xs" color="whiteAlpha.600">
-            @{user?.username}
+            @{profileData?.username}
           </Text>
           <Text fontSize="sm" color="whiteAlpha.800">
-            {user?.profile_description}
+            {profileData?.profile_description}
           </Text>
           <HStack fontSize="sm">
             <HStack>
-              <Text color="whiteAlpha.800">{user?.numfollowing}</Text>
+              <Text color="whiteAlpha.800">{following?.length}</Text>
               <Text color="whiteAlpha.600">Following</Text>
             </HStack>
             <HStack>
-              <Text color="whiteAlpha.800">{user?.numfollowers}</Text>
+              <Text color="whiteAlpha.800">{followers?.length}</Text>
               <Text color="whiteAlpha.600">Followers</Text>
             </HStack>
           </HStack>

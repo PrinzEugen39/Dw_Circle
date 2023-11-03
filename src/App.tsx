@@ -14,6 +14,7 @@ import Follows from "./pages/Follows";
 import Search from "./pages/Search";
 import ProfileLayout from "./layout/ProfileLayout";
 import Profile from "./pages/Profile";
+import PageNotFound from "./pages/PageNotFound";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -72,6 +73,7 @@ export default function App() {
         <Route element={<IsNotLogin2 />}>
           <Route path="profile" element={<Profile />} />
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </QueryClientProvider>
   );

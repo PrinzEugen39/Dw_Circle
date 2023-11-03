@@ -17,13 +17,12 @@ import { ThreadPostsProps } from "../../types/ThreadItemsProps";
 import Spinner from "../../components/Spinner";
 import { useThreads } from "../../hooks/useThread";
 import { useCreateThread } from "../../hooks/useCreateThread";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/type/RootState";
+import { useFollowing } from "../Follows/useFollowing";
 
 export default function ThreadPosts() {
   const { threadData, isLoading } = useThreads();
-  const { handleChange, mutate, isPending, handleButtonClick, fileInputRef } = useCreateThread();
-  const user = useSelector((state: RootState) => state?.auth);
+  const { handleChange, mutate, isPending, handleButtonClick, fileInputRef, form } = useCreateThread();
+  const { userFollowData: userProfileData } = useFollowing();
 
   if (isLoading) return <Spinner />;
 
@@ -41,7 +40,7 @@ export default function ThreadPosts() {
             <Avatar
               size="sm"
               name="Dan Abrahmov"
-              src={user?.profile_picture}
+              src={userProfileData?.profile_picture}
             />
             <Input
               variant="flushed"
@@ -49,6 +48,7 @@ export default function ThreadPosts() {
               maxW="25rem"
               name="content"
               onChange={handleChange}
+              value={form.content}
             />
             <FormLabel htmlFor="image" pos="relative" mt="2">
               <IconButton aria-label="addImage" icon={<BiImageAdd />} onClick={handleButtonClick} />

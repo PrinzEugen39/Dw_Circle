@@ -28,6 +28,7 @@ export default function SuggestionItems({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["following"] });
+      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
     },
     onError: (err) => {
       console.log(err);
@@ -44,6 +45,8 @@ export default function SuggestionItems({
   if (isLoading) return <Spinner />;
 
   const { following } = userFollowData;
+  console.log(following);
+  
 
   const isFollowing = following.some((follow: any) => follow.id === user_id);
   
