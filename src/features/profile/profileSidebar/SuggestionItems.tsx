@@ -17,6 +17,7 @@ export default function SuggestionItems({
   });
   // const SignedInuser = useSelector((state: RootState) => state?.auth);
   const { userFollowData, isLoading } = useFollowing();
+  
 
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -48,7 +49,7 @@ export default function SuggestionItems({
   console.log(following);
   
 
-  const isFollowing = following.some((follow: any) => follow.id === user_id);
+  const isFollowing = following?.some((follow: any) => follow.id === user_id);
   
   return (
     <HStack spacing={0} justifyContent={"space-between"} px={2} key={user_id}>

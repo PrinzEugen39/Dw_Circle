@@ -10,7 +10,7 @@ export function useFollowing() {
     queryKey: ["following"],
     queryFn: async () => {
       const { data } = await axiosApi.get("/user");
-      return data;
+      return data.data;
     },
   });
 
